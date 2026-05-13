@@ -1,0 +1,16 @@
+global:
+  scrape_interval: 5s
+
+scrape_configs:
+  # Prometheus memonitor dirinya sendiri (opsional tapi disarankan)
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+  
+  # Job baru sesuai instruksi untuk memonitor Node Exporter
+  - job_name: 'gurren-lagann-core'
+    static_configs:
+      - targets: ['node-exporter:9100']
+
+      # Menggunakan nama service docker (node-exporter) dan port defaultnya (9100)
+      - targets: ['node-exporter:9100']

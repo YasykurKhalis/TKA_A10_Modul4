@@ -1,0 +1,46 @@
+services:
+  node-exporter:
+    image: prom/node-exporter:latest
+    container_name: node-exporter
+    networks:
+      - dai-gurren-network
+    restart: unless-stopped
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      # Mount file konfigurasi prometheus.yml dari host ke dalam container
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      # Volume agar data metrik tidak hilang
+      - prometheus_data:/prometheus
+    networks:
+      - dai-gurren-network
+    restart: unless-stopped
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    environment:
+      - GF_SECURITY_ADMIN_USER=simon
+      - GF_SECURITY_ADMIN_PASSWORD=gigadrillbreaker
+    ports:
+      - "3000:3000"
+    volumes:
+      # Volume agar dashboard dan pengaturan Grafana tidak hilang
+      - grafana_data:/var/lib/grafana
+    networks:
+      - dai-gurren-network
+    restart: unless-stopped
+
+# Definisi custom network
+networks:
+  dai-gurren-network:
+    driver: bridge
+
+# Definisi named volumes
+volumes:
+  prometheus_data:
+  grafana_data:
