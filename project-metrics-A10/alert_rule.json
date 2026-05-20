@@ -1,0 +1,65 @@
+{
+  "annotations": {
+    "summary": "High HTTP Request Volume"
+  },
+  "condition": "B",
+  "data": [
+    {
+      "refId": "A",
+      "relativeTimeRange": {
+        "from": 60,
+        "to": 0
+      },
+      "datasourceUid": "efm7putsztb0ga",
+      "model": {
+        "expr": "sum(rate(http_requests_total[1m]))",
+        "hide": false,
+        "refId": "A"
+      }
+    },
+    {
+      "refId": "B",
+      "datasourceUid": "-100",
+      "model": {
+        "conditions": [
+          {
+            "evaluator": {
+              "params": [
+                5
+              ],
+              "type": "gt"
+            },
+            "operator": {
+              "type": "and"
+            },
+            "query": {
+              "params": [
+                "A"
+              ]
+            },
+            "reducer": {
+              "params": [],
+              "type": "last"
+            },
+            "type": "query"
+          }
+        ],
+        "datasource": {
+          "type": "__expr__",
+          "uid": "__expr__"
+        },
+        "expression": "A",
+        "hide": false,
+        "refId": "B",
+        "type": "classic_conditions"
+      }
+    }
+  ],
+  "folderUid": "monitoring",
+  "for": "5s",
+  "execErrState": "Alerting",
+  "noDataState": "NoData",
+  "name": "HTTP Over Kicau Alert",
+  "title": "HTTP Over Kicau Alert",
+  "ruleGroup": "node-app-alerts"
+}
